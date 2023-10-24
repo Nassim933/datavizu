@@ -14,6 +14,8 @@ from reportlab.lib.units import inch
 from reportlab.platypus import Spacer
 import io
 
+
+
 @st.cache_data()
 def load_data():
     df = pd.read_csv('data.csv', encoding='ISO-8859-1', sep=';')
@@ -48,12 +50,7 @@ def log_execution_time(func):
 
     return wrapper
 @log_execution_time
-def show_data(df, num_rows=10):
-    st.title("Data overview")
-
-    st.write("Display a small part of the data :")
-    st.write(df.head(num_rows))
-
+def show_data(df):
     st.write("Download the complete dataset :")
     csv_data = df.to_csv(index=False, encoding='utf-8')
     st.download_button(
@@ -378,7 +375,7 @@ def graphique6(df):
         (df_annee['Indicateur'] == indicateur_choisi) & (df_annee['Correction'] == 'Série brute')]
 
     if not df_indicateur_annee.empty:
-        st.bar_chart(df_indicateur_annee.set_index('Unite temps')['Valeurs'], use_container_width=True)
+        st.line_chart(df_indicateur_annee.set_index('Unite temps')['Valeurs'], use_container_width=True)
     else:
         st.warning("No data available to generate the graph.")
 
@@ -478,12 +475,12 @@ def main():
             file_name="rapport.pdf",
             key="download_button_pdf"
         )
-
-    st.write("Personal information :")
-    st.write("Surname : NADY")
-    st.write("Name : Nassim")
-    st.write("Promo : 2025")
-    st.write("Class : BIA-2")
+    st.sidebar.header("Personal information :")
+    st.sidebar.write("NADY")
+    st.sidebar.write("Nassim")
+    st.sidebar.write("2025")
+    st.sidebar.write("BIA-2")
+    st.sidebar.write("#datavz2023efrei")
 
 if __name__ == "__main__":
     main()
